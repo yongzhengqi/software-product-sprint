@@ -15,14 +15,19 @@
 /**
  * Adds a random greeting to the page.
  */
-function addRandomGreeting() {
-  const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
+function addRandomQuote() {
+  const cooperQuotes =
+      ['Hard As This May Be To Believe, It’s Possible That I’m Not Boyfriend Material.', 
+      'Scissors Cuts Paper. Paper Covers Rock. Rock Crushes Lizard.', 
+      'I\'m Exceedingly Smart. I Graduated College At 14.', 
+      'Robert Oppenheimer Was Lonely.',
+      'I\'m Not Crazy. My Mother Had Me Tested.',
+      'Bazinga!'];
 
   // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+  const cooperQuote = cooperQuotes[Math.floor(Math.random() * cooperQuotes.length)];
 
   // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
+  const quoteContainer = document.getElementById('quote-container');
+  quoteContainer.innerText = cooperQuote;
 }
