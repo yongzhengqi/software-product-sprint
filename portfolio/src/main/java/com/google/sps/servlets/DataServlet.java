@@ -15,18 +15,22 @@
 package com.google.sps.servlets;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.format.DateTimeFormatter;  
+import java.time.LocalDateTime;    
+import com.google.gson.Gson;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/random-quote")
 public class DataServlet extends HttpServlet {
 
   private List<String> quotes;
+  private int tryCount;
+  private DateTimeFormatter dtf;  
 
   @Override
   public void init() {
@@ -36,13 +40,26 @@ public class DataServlet extends HttpServlet {
     quotes.add("Robert Oppenheimer Was Lonely.");
     quotes.add("I\'m Not Crazy. My Mother Had Me Tested.");
     quotes.add("Bazinga!");
+
+    tryCount = 0;
+
+    dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
   }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String quote = quotes.get((int) (Math.random() * quotes.size()));
+    int currentTry = ++tryCount;
+    String currentTime = dtf.format(LocalDateTime.now());
 
-    response.setContentType("text/html;");
-    response.getWriter().println(quote);
+    Map<String, String> dataPack = new HashMap();  
+    dataPack.put("quote", quote);
+    dataPack.put("currentTry", "Try #" + Integer.toString(currentTry) + ".");
+    dataPack.put("currentTime", "At " + currentTime + ".");
+    Gson gson = new Gson();
+    String json = gson.toJson(dataPack);
+
+    response.setContentType("application/json;");
+    response.getWriter().println(json);
   }
 }

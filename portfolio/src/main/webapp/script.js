@@ -34,6 +34,13 @@ function addRandomQuote() {
 
 async function addRandomQuoteUsingAsyncAwait() {
   const response = await fetch('/random-quote');
-  const quote = await response.text();
+  const dataPack = await response.json();
+
+  const quote = dataPack["quote"];
+  const currentTry = dataPack["currentTry"];
+  const currentTime = dataPack["currentTime"];
+
   document.getElementById('quote-container').innerText = quote;
+  document.getElementById('count-container').innerText = currentTry;
+  document.getElementById('time-container').innerText = currentTime;
 }
