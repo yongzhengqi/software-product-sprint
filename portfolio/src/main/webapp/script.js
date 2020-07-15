@@ -31,3 +31,9 @@ function addRandomQuote() {
   const quoteContainer = document.getElementById('quote-container');
   quoteContainer.innerText = cooperQuote;
 }
+
+async function addRandomQuoteUsingAsyncAwait() {
+  const response = await fetch('/random-quote');
+  const quote = await response.text();
+  document.getElementById('quote-container').innerText = quote;
+}

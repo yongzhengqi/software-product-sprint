@@ -15,18 +15,34 @@
 package com.google.sps.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
-@WebServlet("/data")
+@WebServlet("/random-quote")
 public class DataServlet extends HttpServlet {
+
+  private List<String> quotes;
+
+  @Override
+  public void init() {
+    quotes = new ArrayList<>();
+    quotes.add("Hard As This May Be To Believe, It’s Possible That I’m Not Boyfriend Material.");
+    quotes.add("I\'m Exceedingly Smart. I Graduated College At 14.");
+    quotes.add("Robert Oppenheimer Was Lonely.");
+    quotes.add("I\'m Not Crazy. My Mother Had Me Tested.");
+    quotes.add("Bazinga!");
+  }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String quote = quotes.get((int) (Math.random() * quotes.size()));
+
     response.setContentType("text/html;");
-    response.getWriter().println("<h1>Hello world!</h1>");
+    response.getWriter().println(quote);
   }
 }
