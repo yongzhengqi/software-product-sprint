@@ -24,42 +24,50 @@ import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;    
 import com.google.gson.Gson;
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
-@WebServlet("/random-quote")
-public class DataServlet extends HttpServlet {
-
-  private List<String> quotes;
-  private int tryCount;
-  private DateTimeFormatter dtf;  
-
-  @Override
-  public void init() {
-    quotes = new ArrayList<>();
-    quotes.add("Hard As This May Be To Believe, It’s Possible That I’m Not Boyfriend Material.");
-    quotes.add("I\'m Exceedingly Smart. I Graduated College At 14.");
-    quotes.add("Robert Oppenheimer Was Lonely.");
-    quotes.add("I\'m Not Crazy. My Mother Had Me Tested.");
-    quotes.add("Bazinga!");
-
-    tryCount = 0;
-
-    dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-  }
+@WebServlet("/verify-guess")
+public class GuessServlet extends HttpServlet {
+  private String lastResult = "";
+  private String lastTry = "";
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String quote = quotes.get((int) (Math.random() * quotes.size()));
-    int currentTry = ++tryCount;
-    String currentTime = dtf.format(LocalDateTime.now());
-
     Map<String, String> dataPack = new HashMap();  
-    dataPack.put("quote", quote);
-    dataPack.put("currentTry", "Try #" + Integer.toString(currentTry) + ".");
-    dataPack.put("currentTime", "At " + currentTime + ".");
-    Gson gson = new Gson();
-    String json = gson.toJson(dataPack);
+    dataPack.put("result", lastResult);
+    dataPack.put("text", lastTry);
+
+    String json = new Gson().toJson(dataPack);
 
     response.setContentType("application/json;");
     response.getWriter().println(json);
+  }
+
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Get the input from the form.
+    String text = getParameter(request, "guess-input", "");
+
+    lastTry = text;
+
+    text = text.toUpperCase();
+
+    if (text.contains("BIG BANG THEORY")) {
+        lastResult = "Right!";
+    } else {
+        lastResult = "Wrong~ Try again!";
+    }
+
+    response.sendRedirect("index.html");
+  }
+
+  /**
+   * @return the request parameter, or the default value if the parameter
+   *         was not specified by the client
+   */
+  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+    String value = request.getParameter(name);
+    if (value == null) {
+      return defaultValue;
+    }
+    return value;
   }
 }

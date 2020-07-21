@@ -1,25 +1,34 @@
+
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>My Portfolio</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
-  </head>
-  <body>
-    <div id="content">
-      <h1>The Portfolio of Charles Young</h1>
-      <p>Hi! This is Charles Young. I'm a junior student majoring in CS. Nice to meet you.</p>
-      <img src="images/avatar.jpeg", style="width:500px;"/>
-      <p>Click here to get a random quote from my favorite sitcom:</p>
-      <button onclick="addRandomQuoteUsingAsyncAwait()">Next Quote</button>
-      <div id="quote-container"></div>
-      <div id="count-container"></div>
-      <div id="time-container"></div>
-      <p>Guess which sitcom those quotes come from?</p>
-    </div>
-  </body>
-  <script type="text/javascript">
-    addRandomQuoteUsingAsyncAwait();
-  </script>
+	<head>
+		<meta charset="UTF-8">
+		<title>My Portfolio</title>
+		<link rel="stylesheet" href="style.css">
+		<script src="script.js"></script>
+	</head>
+	<body onload="judgeIfSuccess()">
+	<body>
+		<div id="content">
+			<h1>The Portfolio of Charles Young</h1>
+			<p>Hi! This is Charles Young. I'm a junior student majoring in CS. Nice to meet you.</p>
+			<img src="images/avatar.jpeg", style="width:500px;"/>
+			<p>Click here to get a random quote from my favorite sitcom:</p>
+			<button onclick="addRandomQuoteUsingAsyncAwait()">Next Quote</button>
+			<div id="quote-container"></div>
+			<div id="count-container"></div>
+			<div id="time-container"></div>
+			<p>Guess which sitcom those quotes come from?</p>
+			<form action="/verify-guess" method="POST">
+				<p>Enter your guess:</p>
+				<textarea name="guess-input" id="guess-input"></textarea>
+				<br/><br/>
+				<input type="submit" />
+			</form>
+            <div id="result"></div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		addRandomQuoteUsingAsyncAwait();
+	</script>
 </html>

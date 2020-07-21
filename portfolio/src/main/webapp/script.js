@@ -15,21 +15,11 @@
 /**
  * Adds a random greeting to the page.
  */
-function addRandomQuote() {
-  const cooperQuotes =
-      ['Hard As This May Be To Believe, It’s Possible That I’m Not Boyfriend Material.', 
-      'Scissors Cuts Paper. Paper Covers Rock. Rock Crushes Lizard.', 
-      'I\'m Exceedingly Smart. I Graduated College At 14.', 
-      'Robert Oppenheimer Was Lonely.',
-      'I\'m Not Crazy. My Mother Had Me Tested.',
-      'Bazinga!'];
-
-  // Pick a random greeting.
-  const cooperQuote = cooperQuotes[Math.floor(Math.random() * cooperQuotes.length)];
-
-  // Add it to the page.
-  const quoteContainer = document.getElementById('quote-container');
-  quoteContainer.innerText = cooperQuote;
+function judgeIfSuccess() {
+  fetch('/verify-guess').then(response => response.json()).then((dataPack) => {
+    document.getElementById('result').innerText = dataPack["result"];
+    document.getElementById('guess-input').value = dataPack["text"];
+  });
 }
 
 async function addRandomQuoteUsingAsyncAwait() {
