@@ -17,8 +17,8 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 
-@WebServlet("/list-history")
-public class HistoryServlet extends HttpServlet {
+@WebServlet("/list-history-limited")
+public class HistoryServletLimited extends HttpServlet {
   private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"); 
   
   @Override
@@ -44,9 +44,15 @@ public class HistoryServlet extends HttpServlet {
       dataPack.put("guess", guess);
       dataPack.put("timestamp", currentTime);
       history.add(dataPack);
+      
+      // list only 10 most recent guess
+      if (history.size() >= 10) {
+          break;
+      }
     }
 
     String json =  new Gson().toJson(history);
+    // System.out.println(json);
 
     response.setContentType("application/json;");
     response.getWriter().println(json);

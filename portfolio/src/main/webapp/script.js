@@ -20,7 +20,7 @@ function judgeIfSuccess() {
 }
 
 function loadHistory() {
-  fetch('/list-history').then(response => response.json()).then((dataPack) => {
+  fetch('/list-history-limited').then(response => response.json()).then((dataPack) => {
     var table = document.getElementById("historyTable");
 
     dataPack.forEach(function (item, index) {
@@ -54,4 +54,38 @@ function checkIfEmpty() {
   } else {
     return true; 
   }
+}
+
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
+/** Creates a chart and adds it to the page. */
+function drawChart() {
+  fetch('/list-history').then(response => response.json()).then((dataPack) => {
+    const data = new google.visualization.DataTable();
+    data.addColumn('string', 'Guess');
+    data.addColumn('number', 'Count');
+
+    let historyUniqued = new Map()
+    dataPack.forEach(function (item, index) {
+      if (historyUniqued.has(item["guess"])) {
+        historyUniqued.set(item["guess"], historyUniqued.get(item["guess"]) + 1);
+      } else {
+        historyUniqued.set(item["guess"], 1);
+      }
+    });
+
+    historyUniqued.forEach(function (value, key, map) {
+      data.addRows([[key, value]]);
+    });
+
+    const options = {
+      'title': 'All Guesses',
+      'width':500,
+      'height':400
+    };
+
+    const chart = new google.visualization.PieChart(document.getElementById('chart-container'));
+    chart.draw(data, options);
+  });
 }
