@@ -1,18 +1,44 @@
+
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>My Portfolio</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
-  </head>
-  <body>
-    <div id="content">
-      <h1>My Portfolio</h1>
-      <p>This is my portfolio.</p>
-      <p>Click here to get a random message:</p>
-      <button onclick="addRandomGreeting()">Hello</button>
-      <div id="greeting-container"></div>
-    </div>
-  </body>
+	<head>
+		<meta charset="UTF-8">
+		<title>My Portfolio</title>
+		<link rel="stylesheet" href="style.css">
+        <script src="https://www.gstatic.com/charts/loader.js"></script>
+		<script src="script.js"></script>
+	</head>
+	<body>
+		<div id="content">
+			<h1>The Portfolio of Charles Young</h1>
+			<p>Hi! This is Charles Young. I'm a junior student majoring in CS. Nice to meet you.</p>
+			<img src="images/avatar.jpeg", style="width:500px;"/>
+			<p>Click here to get a random quote from my favorite sitcom:</p>
+			<button onclick="addRandomQuoteUsingAsyncAwait()">Next Quote</button>
+			<div id="quote-container"></div>
+			<div id="count-container"></div>
+			<div id="time-container"></div>
+			<p>Guess which sitcom those quotes come from?</p>
+			<form action="/verify-guess" method="POST">
+				<p>Enter your guess:</p>
+				<textarea name="guess-input" id="guess-input"></textarea>
+				<br/><br/>
+                <input type="submit" onClick="return checkIfEmpty()" />
+			</form>
+            <div id="result"></div>
+            <p>10 most rescent guesses:</p>
+            <table id="historyTable" border="1">
+                <tr>
+                    <th>Guess</th>
+                    <th>Time</th>
+                </tr>
+            </table>
+            <div id="chart-container"></div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		addRandomQuoteUsingAsyncAwait();
+        loadHistory();
+        judgeIfSuccess();
+	</script>
 </html>
