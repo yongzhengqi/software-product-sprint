@@ -7,7 +7,7 @@
 		<link rel="stylesheet" href="style.css">
 		<script src="script.js"></script>
 	</head>
-	<body onload="judgeIfSuccess()">
+	<body>
 	<body>
 		<div id="content">
 			<h1>The Portfolio of Charles Young</h1>
@@ -23,12 +23,21 @@
 				<p>Enter your guess:</p>
 				<textarea name="guess-input" id="guess-input"></textarea>
 				<br/><br/>
-				<input type="submit" />
+                <input type="submit" onClick="return checkIfEmpty()" />
 			</form>
             <div id="result"></div>
+            <p>10 most rescent guesses:</p>
+            <table id="historyTable" border="1">
+                <tr>
+                    <th>Guess</th>
+                    <th>Time</th>
+                </tr>
+            </table>
 		</div>
 	</body>
 	<script type="text/javascript">
 		addRandomQuoteUsingAsyncAwait();
+        loadHistory();
+        judgeIfSuccess();
 	</script>
 </html>

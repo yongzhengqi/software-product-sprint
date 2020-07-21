@@ -12,13 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * Adds a random greeting to the page.
- */
 function judgeIfSuccess() {
   fetch('/verify-guess').then(response => response.json()).then((dataPack) => {
     document.getElementById('result').innerText = dataPack["result"];
     document.getElementById('guess-input').value = dataPack["text"];
+  });
+}
+
+function loadHistory() {
+  fetch('/list-history').then(response => response.json()).then((dataPack) => {
+    var table = document.getElementById("historyTable");
+
+    dataPack.forEach(function (item, index) {
+      var row = table.insertRow(-1);
+      var cell1 = row.insertCell(0);
+      var cell2 = row.insertCell(1);
+      cell1.innerHTML = item["guess"];
+      cell2.innerHTML = item["timestamp"];
+    });
   });
 }
 
@@ -33,4 +44,14 @@ async function addRandomQuoteUsingAsyncAwait() {
   document.getElementById('quote-container').innerText = quote;
   document.getElementById('count-container').innerText = currentTry;
   document.getElementById('time-container').innerText = currentTime;
+}
+
+function checkIfEmpty() {
+  var val = document.getElementById('guess-input').value;
+  if (val == "") {
+    alert("Please input your guess.");
+    return false;
+  } else {
+    return true; 
+  }
 }

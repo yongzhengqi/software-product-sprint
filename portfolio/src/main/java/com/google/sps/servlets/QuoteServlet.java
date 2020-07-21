@@ -23,12 +23,17 @@ import javax.servlet.http.HttpServletResponse;
 import java.time.format.DateTimeFormatter;  
 import java.time.LocalDateTime;    
 import com.google.gson.Gson;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 
 @WebServlet("/random-quote")
 public class QuoteServlet extends HttpServlet {
 
   private List<String> quotes;
-  private int tryCount;
   private DateTimeFormatter dtf;  
 
   @Override
@@ -40,15 +45,17 @@ public class QuoteServlet extends HttpServlet {
     quotes.add("I\'m Not Crazy. My Mother Had Me Tested.");
     quotes.add("Bazinga!");
 
-    tryCount = 0;
-
     dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
   }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    Query query = new Query("Guess");
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
+
     String quote = quotes.get((int) (Math.random() * quotes.size()));
-    int currentTry = ++tryCount;
+    int currentTry = results.countEntities();
     String currentTime = dtf.format(LocalDateTime.now());
 
     Map<String, String> dataPack = new HashMap();  
